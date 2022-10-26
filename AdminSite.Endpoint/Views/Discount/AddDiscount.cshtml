@@ -1,0 +1,171 @@
+﻿@using Application.Services.Discounts.CRUDServices
+@model AddDiscountDto
+@{
+    ViewData["Title"] = "AddDiscount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Domain.Discounts;
+<link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+<link href="~/css/select2-bootstrap4.css" rel="stylesheet" />
+<link href="~/css/select2-bootstrap4.min.css" rel="stylesheet" />
+<link href="~/MdPersianDateTimePicker/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+
+<div class="col-lg-12 col-12 layout-spacing">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4> تخفیف جدید  ثبت کنید  </h4>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <form asp-action="adddiscount" asp-controller="discount" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group  col-md-4">
+                        <label asp-for="Name"> </label>
+                        <input type="text" class="form-control" asp-for="Name">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label asp-for="RequiresCouponCode"> </label>
+                        <input type="checkbox" class="form-control" asp-for="RequiresCouponCode">
+                        <span asp-validation-for="RequiresCouponCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="CouponCode"> </label>
+                        <input type="text" class="form-control" asp-for="CouponCode">
+                        <span asp-validation-for="CouponCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group  col-md-6">
+                        <label asp-for="StartDate"> </label>
+                        <input type="text" class="form-control" asp-for="StartDate">
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="EndDate"> </label>
+                        <input type="text" class="form-control" asp-for="EndDate">
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label asp-for="UsePercentage"> </label>
+                        <input class="form-control" asp-for="UsePercentage">
+                        <span asp-validation-for="UsePercentage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="DiscountPercentage"> </label>
+                        <input type="text" class="form-control" asp-for="DiscountPercentage">
+                        <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="DiscountAmount"> </label>
+                        <input type="text" class="form-control" asp-for="DiscountAmount">
+                        <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group  col-md-4">
+                        <label asp-for="DiscountTypeId"> </label>
+                        <select asp-for="DiscountTypeId" class="form-control" asp-items="@Html.GetEnumSelectList<DiscountType>()"></select>
+                        <span asp-validation-for="DiscountTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="DiscountLimitationId"> </label>
+                        <select asp-for="DiscountLimitationId" class="form-control" asp-items="@Html.GetEnumSelectList<DiscountLimitationType>()"></select>
+
+                        <span asp-validation-for="DiscountLimitationId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="LimitationTimes"> </label>
+                        <input type="text" class="form-control" asp-for="LimitationTimes">
+                        <span asp-validation-for="LimitationTimes" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group  col-md-4">
+                        <label> محصولات را انتخاب کنید</label>
+                        <select class="form-control" asp-for="appliedToCatalogItem">
+                        </select>
+                    </div>
+                </div>
+
+                <input type="submit" name="time" value="ثبت" class="btn btn-primary">
+                <a asp-action="index" asp-controller="discount" btn btn-info">برگشت به لیست</a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/MdPersianDateTimePicker/jquery.md.bootstrap.datetimepicker.js"></script>
+
+    <script>
+        $('#StartDate').MdPersianDateTimePicker({
+            targetTextSelector: '#StartDate',
+            toDate: true,
+            groupId: 'rangeSelector1',
+            placement: 'top',
+            enableTimePicker: true,
+            dateFormat: 'yyyy-MM-dd HH:mm:ss',
+            textFormat: 'yyyy-MM-dd HH:mm:ss',
+            modalMode: true
+        });
+
+        $('#EndDate').MdPersianDateTimePicker({
+            targetTextSelector: '#EndDate',
+            toDate: true,
+            groupId: 'rangeSelector1',
+            placement: 'top',
+            enableTimePicker: true,
+            dateFormat: 'yyyy-MM-dd HH:mm:ss',
+            textFormat: 'yyyy-MM-dd HH:mm:ss',
+            modalMode: true
+        });
+    </script>
+
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script>
+        $("#appliedToCatalogItem").select2({
+            placeholder: "محصول را جستجو وانتخاب کنید",
+            allowClear: true,
+            multiple: true,
+            tags: true,
+            tokenSeparators: [',', ' '],
+            theme: "bootstrap4",
+            ajax: {
+                url: "/api/DiscountApi/SearchCatalogItem/",
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    var query =
+                    {
+                        term: params.term,
+                    };
+                    return query;
+                },
+                processResults: function (result) {
+                    return {
+                        results: $.map(result, function (item) {
+                            return {
+                                id: item.id,
+                                text: item.name
+                            };
+                        }),
+                    };
+                }
+            }
+        });
+    </script>
+
+}

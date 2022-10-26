@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "AddDiscount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="row">
+    <div class="form-group  col-md-4">
+        <label> محصولات را انتخاب کنید</label>
+        <select class="form-control" id="appliedToCatalogItem">
+        </select>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+
+<script src="~/lib/select2/js/select2.js"></script>
+<script>
+    $("#appliedToCatalogItem").select2({
+        placeholder: "محصول را جستجو وانتخاب کنید",
+        allowClear: true,
+        multiple: true,
+        tags: true,
+        tokenSeparators: [',', ' '],
+        theme: "bootstrap4",
+    });
+    $("#aaa").select2({
+        placeholder: "محصول را جستجو وانتخاب کنید",
+        allowClear: true,
+        multiple: true,
+        tags: true,
+        tokenSeparators: [',', ' '],
+        theme: "bootstrap4",
+        //ajax: {
+        //    url: "/api/DiscountApi/SearchCatalogItem/",
+        //    contentType: "application/json; charset=utf-8",
+        //    data: function (params) {
+        //        var query =
+        //        {
+        //            term: params.term,
+        //        };
+        //        return query;
+        //    },
+        //    processResults: function (result) {
+        //        return {
+        //            results: $.map(result, function (item) {
+        //                return {
+        //                    id: item.id,
+        //                    text: item.name
+        //                };
+        //            }),
+        //        };
+        //    }
+        //}
+    });
+</script>
+
+}

@@ -1,0 +1,423 @@
+﻿@using Application.Services.Catalogs.CatalogItems.CatalogItemServices
+@model SelectListDto
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="card">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-wrap bar-success">
+                        <h4 class="card-title mb-0">افزودن کاتالوگ جدید</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="createForm" class="form" asp-antiforgery="true" onsubmit="return sendDataToServer(event)">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-4 mb-1">
+                                <fieldset class="form-group">
+                                    <label for="basicInput">نام کاتالوگ </label>
+                                    <input type="text" class="form-control" id="Name">
+                                    <span class="text-danger"></span>
+                                </fieldset>
+                            </div>
+                            <div class="row col-xl-8 col-lg-8 col-md-8 mb-1">
+                                <div class="col-xl-4 col-lg-4 col-md-4 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="basicInput">دسته بندی </label>
+                                        <br />
+                                        <select id="parentcatalogtypes" name="ParentCatalogTypeId" asp-for="parentcatalogtypeid" asp-items="Model.parentcatalogtypes">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </fieldset>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="basicInput">زیردسته ۱</label>
+                                        <br />
+                                        <select id="subtype1" name="SubTypeId1" asp-for="subtypeid1" asp-items="Model.subtypes1">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </fieldset>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="basicInput">زیردسته ۲</label>
+                                        <br />
+                                        <select id="subtype2" name="SubTypeId2" asp-for="subtypeid2" asp-items="Model.subtypes2">
+                                            <option value="">Please select</option>
+                                        </select>
+
+                                    </fieldset>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="basicInput"> برند </label>
+                                        <br />
+                                        <select id="brand" name="BrandId" asp-for="brandid" asp-items="Model.brands">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </fieldset>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <label for="basicInput"> تعداد موجودی</label>
+                                    <input type="number" class="form-control" id="AvailableStock">
+                                    <span class="text-danger"></span>
+
+                                </fieldset>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <label for="basicInput">حداقل برای سفارش مجدد</label>
+                                    <input type="number" class="form-control" id="RestockThreshold">
+                                    <span class="text-danger"></span>
+
+                                </fieldset>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <label for="basicInput">حداکثر توان ذخیره در انبار</label>
+                                    <input type="number" class="form-control" id="MaxStockThreshold">
+                                    <span class="text-danger"></span>
+                                </fieldset>
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <label for="basicInput"> قیمت</label>
+                                    <input type="number" class="form-control" id="Price">
+                                    <span class="text-danger"></span>
+
+                                </fieldset>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <label for="basicInput">تصاویر </label>
+                                    <input type="file" multiple class="form-control" accept="image/*" id="Images">
+                                </fieldset>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="card col-md-12">
+                            <div class="card-header col-md-12 row">
+                                <div class="col-xl-2 col-lg-6 col-md-12 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="basicInput"> نام گروه </label>
+                                        <input type="text" class="form-control" id="txtGroup" placeholder="نام گروه" />
+                                    </fieldset>
+                                </div>
+                                <div class="col-xl-2 col-lg-6 col-md-12 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="basicInput"> نام ویژگی </label>
+                                        <input type="text" class="form-control" id="txtKey" placeholder="نام ویژگی" />
+                                    </fieldset>
+                                </div>
+                                <div class="col-xl-2 col-lg-6 col-md-12 mb-1">
+                                    <fieldset class="form-group">
+                                        <label for="basicInput"> مقدار ویژگی </label>
+                                        <input type="text" class="form-control" id="txtValue" placeholder="مقدار ویژگی" />
+                                    </fieldset>
+                                </div>
+                                <div class="col-xl-2 col-lg-6 col-md-12 mb-1">
+                                    <fieldset class="form-group">
+                                        <br />
+                                        <a class="btn btn-success" id="btnAddFeatures">افزودن</a>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="card-body col-md-12">
+                                <table id="tbl_Features" class="col-md-12 table table-bordered table-hover  table-condensed table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                گروه
+                                            </th>
+                                            <th>
+                                                نام ویژگی
+                                            </th>
+                                            <th>
+                                                مقدار ویژگی
+                                            </th>
+                                            <th>
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card col-md-12 row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <label for="basicInput"> توضیحات</label>
+                                    <textarea id="Description" class="form-control " rows="5"></textarea>
+                                    <span class="text-danger"></span>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                            <fieldset class="form-group">
+                                <button id="btnadd" type="submit" class="btn btn-success col-md-12"> ثبت کاتالوگ</button>
+                            </fieldset>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</section>
+
+@section Scripts {
+
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://cdn.ckeditor.com/4.13.0/standard-all/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Description', {
+            language: 'fa',
+            contentsLangDirection: 'rtl',
+            height: 270,
+        });
+    </script>
+
+    <script>
+        $(function () {
+
+            $("select").each(function () {
+                if ($(this).find("option").length <= 1) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+
+            $("select").change(function () {
+                var value = 0;
+                if ($(this).val() != "") {
+                    value = $(this).val();
+                }
+                var id = $(this).attr("id");
+                if (id == "parentcatalogtypes" || id == "subtype1"|| id == "subtype2") {
+                    $.ajax({
+                        type: "POST",
+                        url: "/CatalogItem/AjaxMethod",
+                        data: { value: value, type: id },
+                        success: function (response) {
+                            switch (id) {
+                                case "parentcatalogtypes":
+                                    DisableDropDown("#subtype1");
+                                    DisableDropDown("#subtype2");
+                                    DisableDropDown("#brand");
+                                    PopulateDropDown("#subtype1", response.subtypes1);
+                                    break;
+                                case "subtype1":
+                                    DisableDropDown("#brand");
+                                    DisableDropDown("#subtype2");
+                                    PopulateDropDown("#subtype2", response.subtypes2);
+                                    PopulateDropDown("#brand", response.brands);
+                                    break;
+                                case "subtype2":
+                                    DisableDropDown("#brand");
+                                    PopulateDropDown("#brand", response.brands);
+                                    break;
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+
+            });
+
+
+        });
+
+        function DisableDropDown(dropDownId) {
+            $(dropDownId).attr("disabled", "disabled");
+            $(dropDownId).empty().append('<option selected="selected" value="0">Please select</option>');
+        }
+
+        function PopulateDropDown(dropDownId, list) {
+            if (list != null && list.length > 0) {
+                $(dropDownId).removeAttr("disabled");
+                $.each(list, function () {
+                    $(dropDownId).append($("<option></option>").val(this['value']).html(this['text']));
+                });
+            }
+        }
+        $("#btnAddFeatures").on("click", function () {
+            var txtKey = $("#txtKey").val();
+            var txtValue = $("#txtValue").val();
+            var txtGroup = $("#txtGroup").val();
+
+            if (txtKey == "" || txtValue == "" || txtGroup == "") {
+                swal.fire(
+                    'هشدار!',
+                    "نام گروه - نام ویژگی و مقدار اجباری هستند",
+                    'warning'
+                );
+            }
+            else {
+                $('#tbl_Features tbody').append('<tr><td>' + txtGroup + '</td>  <td>' + txtKey + '</td>  <td>' + txtValue + '</td> <td> <a class="idFeatures btnDelete btn btn-danger"> حذف </a> </td> </tr>');
+                $("#txtKey").val('');
+                $("#txtValue").val('');
+            }
+        });
+
+        $("#tbl_Features").on('click', '.idFeatures', function () {
+            $(this).closest('tr').remove();
+        });
+        $('#btnadd').on('click', function () {
+            if ($('#subtype1').is(':enabled') && $('#subtype1').val() == 0) {
+                swal.fire(
+                    'هشدار!',
+                    "لطفا زیردسته۱ را انتخاب کنید",
+                    'warning'
+                );
+                return false;
+            } if ($('#subtype2').is(':enabled') && $('#subtype2').val() == 0) {
+                swal.fire(
+                    'هشدار!',
+                    "لطفا زیردسته۲ را انتخاب کنید",
+                    'warning'
+                );
+                return false;
+            }
+            if ($('#brand').is(':enabled') && $('#brand').val() == 0) {
+                swal.fire(
+                    'هشدار!',
+                    "لطفا برند را انتخاب کنید",
+                    'warning'
+                );
+                return false;
+            }
+        });
+
+        function sendDataToServer(e) {
+            e.preventDefault();
+            var form = $("#createForm");
+            form.validate();
+            if (form.valid() == false) {
+                swal.fire(
+                    'هشدار!',
+                    "اطلاعات فرم به درستی وارد نشده است!",
+                    'warning'
+                );
+                return false;
+            }
+
+            var data = new FormData();
+            //دریافت مقادیر از تکس باکس ها و....
+            data.append("Name", $("#Name").val());
+            data.append("AvailableStock", $("#AvailableStock").val());
+            data.append("RestockThreshold", $("#RestockThreshold").val());
+            data.append("MaxStockThreshold", $("#MaxStockThreshold").val());
+            data.append("Price", $("#Price").val());
+            data.append("Description", $("#Description").val());
+            if ($("#subtype2").val() != "") {
+                data.append("CatalogTypeId", $("#subtype2").find('option:selected').val());
+            } else {
+                data.append("CatalogTypeId", $("#subtype1").find('option:selected').val());
+            }
+            data.append("CatalogBrandId", $("#brand").find('option:selected').val());
+
+            //دریافت عکس های انتخاب شده توسط کاربر و قرار دادن عکس ها در متغیر data
+            var catalogImages = document.getElementById("Images");
+            debugger
+            if (catalogImages.files.length > 0) {
+                for (var i = 0; i < catalogImages.files.length; i++) {
+                    data.append('Images-' + i, catalogImages.files[i]);
+                }
+            } else {
+                swal.fire(
+                    'هشدار',
+                    'تصاویر خالی است',
+                    'warning',
+                );
+            }
+
+            //دریافت ویژگی های محصول از جدول
+            var dataFeaturesViewModel = $('#tbl_Features tr:gt(0)').map(function () {
+                return {
+                    Group: $(this.cells[0]).text(),
+                    Key: $(this.cells[1]).text(),
+                    Value: $(this.cells[2]).text(),
+                };
+            }).get();
+
+            $.each(dataFeaturesViewModel, function (i, val) {
+                data.append('Features[' + i + '].Group', val.Group);
+                data.append('Features[' + i + '].Key', val.Key);
+                data.append('Features[' + i + '].Value', val.Value);
+            });
+
+            var ajaxRequest = $.ajax({
+                type: "POST",
+                url: "AddNewCatalogItem",
+                contentType: false,
+                processData: false,
+                data: data,
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire(
+                            'موفق!',
+                            'کاتالوگ با موفقیت ثبت شد',
+                            'success'
+                        ).then(function (isConfirm) {
+                            window.location.href = "/catalogitem";
+                        });
+                    }
+                    else {
+                        swal.fire(
+                            'هشدار!',
+                            "دیتا ثبت نشد",
+                            'warning'
+                        );
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+
+            ajaxRequest.done(function (xhr, textStatus) {
+                // Do other operation
+            });
+
+        }
+
+
+
+
+    </script>
+}
+
